@@ -1,0 +1,47 @@
+{
+	"name": "mongoose-auto-api.validation",
+	"version": "0.0.1",
+	"description": "Automatic Mongoose REST API - Validations module",
+	"main": "./js/index.js",
+	"files": [
+		"/js"
+	],
+	"scripts": {
+		"test": "./node_modules/.bin/mocha js/tests",
+		"compile": "grunt sync"
+	},
+	"author": "Edmund Pfeil {edmundpf@buffalo.edu}",
+	"homepage": "https://github.com/edmundpf/mongoose-auto-api-validation",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/edmundpf/mongoose-auto-api-validation"
+	},
+	"keywords": [
+		"mongoose",
+		"schema",
+		"models",
+		"api",
+		"rest",
+		"restful",
+		"auto",
+		"automatic",
+		"bootstrap",
+		"starter",
+		"template"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"lodash.camelcase": "^4.3.0",
+		"lodash.snakecase": "^4.1.1",
+		"lodash.startcase": "^4.4.0"
+	},
+	"devDependencies": {
+		"chai": "*",
+		"grunt": "*",
+		"grunt-contrib-clean": "*",
+		"grunt-contrib-coffee": "*",
+		"grunt-contrib-copy": "*",
+		"grunt-contrib-watch": "*",
+		"mocha": "*"
+	}
+}

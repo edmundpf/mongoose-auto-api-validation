@@ -1,4 +1,4 @@
-var camelCase, confirmPassVal, confirmValidation, joinValidations, lenValidation, mailValidation, multiValidations, passVal, passValidation, reqValidation, snakeCase, startCase, titleCase, upperSnakeCase, userVal, validationObject;
+var camelCase, confirmPassVal, confirmValidation, joinValidations, lenValidation, lengthVal, mailValidation, multiValidations, passVal, passValidation, reqValidation, requiredVal, snakeCase, startCase, titleCase, upperSnakeCase, userVal, validationObject;
 
 startCase = require('lodash.startcase');
 
@@ -14,6 +14,27 @@ titleCase = function(text) {
 //: Upper Snake Case
 upperSnakeCase = function(text) {
   return snakeCase(text).toUpperCase();
+};
+
+//: Required Field Validation
+requiredVal = function(text, field) {
+  return multiValidations(text, field, [
+    {
+      func: reqValidation
+    }
+  ]);
+};
+
+//: Field Length Validation
+lengthVal = function(text, length, field) {
+  return multiValidations(text, field, [
+    {
+      func: lenValidation,
+      args: {
+        length: length
+      }
+    }
+  ]);
 };
 
 //: User Validation
@@ -154,4 +175,4 @@ joinValidations = function(vals) {
   return error;
 };
 
-module.exports = {userVal, passVal, confirmPassVal, joinValidations};
+module.exports = {userVal, passVal, confirmPassVal, requiredVal, lengthVal, joinValidations};

@@ -2,6 +2,34 @@ assert = require('chai').assert
 should = require('chai').should()
 v = require('../index')
 
+# Required Validation
+
+describe 'Required Validation', ->
+	val = v.requiredVal('', 'customer')
+	it 'Returns object', ->
+		val.should.be.a('object')
+	it 'Messages and Codes Length', ->
+		assert(val.messages.length == val.codes.length)
+	it 'Required Check', ->
+		assert(val.codes.includes('CUSTOMER_REQUIRED'))
+	it 'Valid Text', ->
+		val = v.requiredVal('test@email.com', 'customer')
+		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
+
+# Length Validation
+
+describe 'Length Validation', ->
+	val = v.lengthVal('elmo', 8, 'name')
+	it 'Returns object', ->
+		val.should.be.a('object')
+	it 'Messages and Codes Length', ->
+		assert(val.messages.length == val.codes.length)
+	it 'Length Check', ->
+		assert(val.codes.includes('NAME_INVALID_LENGTH'))
+	it 'Valid Text', ->
+		val = v.lengthVal('christopher', 'name')
+		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
+
 # User Validation
 
 describe 'User Validation', ->

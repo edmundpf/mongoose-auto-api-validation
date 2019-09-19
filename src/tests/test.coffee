@@ -43,12 +43,15 @@ describe 'Password Validation', ->
 # Confirm Password Validation
 
 describe 'Confirm Password Validation', ->
-	val = v.confirmPassVal('test', 'test1', 'confirmPassword')
+	val = v.confirmPassVal('', 'test1', 'confirmPassword')
 	it 'Returns object', ->
 		val.should.be.a('object')
 	it 'Messages and Codes Length', ->
 		assert(val.messages.length == val.codes.length)
+	it 'Required Check', ->
+		assert(val.codes.includes('CONFIRM_PASSWORD_REQUIRED'))
 	it 'Match Check', ->
+		val = v.confirmPassVal('test', 'test1', 'confirmPassword')
 		assert(val.codes.includes('CONFIRM_PASSWORD_INVALID_CONFIRMATION'))
 	it 'Valid Password Confirmation', ->
 		val = v.confirmPassVal('test', 'test', 'confirmPassword')

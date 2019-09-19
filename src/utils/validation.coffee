@@ -58,6 +58,9 @@ confirmPassVal = (text, password, field) ->
 		field,
 		[
 			{
+				func: reqValidation
+			}
+			{
 				func: confirmValidation
 				args:
 					password: password

@@ -50,6 +50,9 @@ passVal = function(text, field) {
 confirmPassVal = function(text, password, field) {
   return multiValidations(text, field, [
     {
+      func: reqValidation
+    },
+    {
       func: confirmValidation,
       args: {
         password: password

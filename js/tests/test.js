@@ -61,14 +61,18 @@ describe('Password Validation', function() {
 // Confirm Password Validation
 describe('Confirm Password Validation', function() {
   var val;
-  val = v.confirmPassVal('test', 'test1', 'confirmPassword');
+  val = v.confirmPassVal('', 'test1', 'confirmPassword');
   it('Returns object', function() {
     return val.should.be.a('object');
   });
   it('Messages and Codes Length', function() {
     return assert(val.messages.length === val.codes.length);
   });
+  it('Required Check', function() {
+    return assert(val.codes.includes('CONFIRM_PASSWORD_REQUIRED'));
+  });
   it('Match Check', function() {
+    val = v.confirmPassVal('test', 'test1', 'confirmPassword');
     return assert(val.codes.includes('CONFIRM_PASSWORD_INVALID_CONFIRMATION'));
   });
   return it('Valid Password Confirmation', function() {

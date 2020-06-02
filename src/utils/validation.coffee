@@ -65,6 +65,22 @@ confirmPassVal = (text, password, field) ->
 		]
 	)
 
+#: JSON Validation
+
+jsonVal = (text, field) ->
+	return multiValidations(
+		text,
+		field,
+		[
+			{
+				func: reqValidation
+			}
+			{
+				func: jsonValidation
+			}
+		]
+	)
+
 #: Required Validation
 
 reqValidation = (text, args) ->
@@ -117,6 +133,22 @@ confirmValidation = (text, args) ->
 		return [
 			'must match password'
 			'INVALID_CONFIRMATION'
+		]
+	else
+		return true
+
+#: JSON Validation
+
+jsonValidation = (text, args) ->
+	isValid = true
+	try
+		JSON.parse(text)
+	catch
+		isValid = false
+	if !isValid
+		return [
+			'must be a valid JSON object'
+			'INVALID_JSON'
 		]
 	else
 		return true
@@ -174,5 +206,6 @@ module.exports = {
 	userVal,
 	passVal,
 	confirmPassVal,
+	jsonVal,
 	joinValidations,
 }

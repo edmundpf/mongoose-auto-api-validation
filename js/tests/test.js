@@ -6,6 +6,44 @@ should = require('chai').should();
 
 v = require('../index');
 
+// Required Validation
+describe('Required Validation', function() {
+  var val;
+  val = v.requiredVal('', 'customer');
+  it('Returns object', function() {
+    return val.should.be.a('object');
+  });
+  it('Messages and Codes Length', function() {
+    return assert(val.messages.length === val.codes.length);
+  });
+  it('Required Check', function() {
+    return assert(val.codes.includes('CUSTOMER_REQUIRED'));
+  });
+  return it('Valid Text', function() {
+    val = v.requiredVal('test@email.com', 'customer');
+    return assert(val.codes.length === 0 && val.messages.length === 0 && val.valid);
+  });
+});
+
+// Length Validation
+describe('Length Validation', function() {
+  var val;
+  val = v.lengthVal('elmo', 8, 'name');
+  it('Returns object', function() {
+    return val.should.be.a('object');
+  });
+  it('Messages and Codes Length', function() {
+    return assert(val.messages.length === val.codes.length);
+  });
+  it('Length Check', function() {
+    return assert(val.codes.includes('NAME_INVALID_LENGTH'));
+  });
+  return it('Valid Text', function() {
+    val = v.lengthVal('christopher', 'name');
+    return assert(val.codes.length === 0 && val.messages.length === 0 && val.valid);
+  });
+});
+
 // User Validation
 describe('User Validation', function() {
   var val;
@@ -61,18 +99,44 @@ describe('Password Validation', function() {
 // Confirm Password Validation
 describe('Confirm Password Validation', function() {
   var val;
-  val = v.confirmPassVal('test', 'test1', 'confirmPassword');
+  val = v.confirmPassVal('', 'test1', 'confirmPassword');
   it('Returns object', function() {
     return val.should.be.a('object');
   });
   it('Messages and Codes Length', function() {
     return assert(val.messages.length === val.codes.length);
   });
+  it('Required Check', function() {
+    return assert(val.codes.includes('CONFIRM_PASSWORD_REQUIRED'));
+  });
   it('Match Check', function() {
+    val = v.confirmPassVal('test', 'test1', 'confirmPassword');
     return assert(val.codes.includes('CONFIRM_PASSWORD_INVALID_CONFIRMATION'));
   });
   return it('Valid Password Confirmation', function() {
     val = v.confirmPassVal('test', 'test', 'confirmPassword');
+    return assert(val.codes.length === 0 && val.messages.length === 0 && val.valid);
+  });
+});
+
+// JSON Validation
+describe('JSON Validation', function() {
+  var val;
+  val = v.jsonVal('', 'jsonField');
+  it('Returns object', function() {
+    return val.should.be.a('object');
+  });
+  it('Messages and Codes Length', function() {
+    return assert(val.messages.length === val.codes.length);
+  });
+  it('Required Check', function() {
+    return assert(val.codes.includes('JSON_FIELD_REQUIRED'));
+  });
+  it('Invalid JSON Check', function() {
+    return assert(val.codes.includes('JSON_FIELD_INVALID_JSON'));
+  });
+  return it('Valid JSON', function() {
+    val = v.jsonVal('{"a":1,"b":"2","c":[1]}', 'jsonField');
     return assert(val.codes.length === 0 && val.messages.length === 0 && val.valid);
   });
 });

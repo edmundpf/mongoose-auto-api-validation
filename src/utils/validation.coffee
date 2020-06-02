@@ -12,6 +12,34 @@ titleCase = (text) ->
 upperSnakeCase = (text) ->
 	return snakeCase(text).toUpperCase()
 
+#: Required Field Validation
+
+requiredVal = (text, field) ->
+	return multiValidations(
+		text,
+		field,
+		[
+			{
+				func: reqValidation
+			}
+		]
+	)
+
+#: Field Length Validation
+
+lengthVal = (text, length, field) ->
+	return multiValidations(
+		text,
+		field,
+		[
+			{
+				func: lenValidation
+				args:
+					length: length
+			}
+		]
+	)
+
 #: User Validation
 
 userVal = (text, field) ->
@@ -57,6 +85,9 @@ confirmPassVal = (text, password, field) ->
 		text,
 		field,
 		[
+			{
+				func: reqValidation
+			}
 			{
 				func: confirmValidation
 				args:
@@ -207,5 +238,7 @@ module.exports = {
 	passVal,
 	confirmPassVal,
 	jsonVal,
+	requiredVal,
+	lengthVal,
 	joinValidations,
 }

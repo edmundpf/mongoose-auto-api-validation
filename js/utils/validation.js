@@ -1,4 +1,4 @@
-var camelCase, confirmPassVal, confirmValidation, joinValidations, lenValidation, mailValidation, multiValidations, passVal, passValidation, reqValidation, snakeCase, startCase, titleCase, upperSnakeCase, userVal, validationObject;
+var camelCase, confirmPassVal, confirmValidation, joinValidations, jsonVal, jsonValidation, lenValidation, lengthVal, mailValidation, multiValidations, passVal, passValidation, reqValidation, requiredVal, snakeCase, startCase, titleCase, upperSnakeCase, userVal, validationObject;
 
 startCase = require('lodash.startcase');
 
@@ -14,6 +14,27 @@ titleCase = function(text) {
 //: Upper Snake Case
 upperSnakeCase = function(text) {
   return snakeCase(text).toUpperCase();
+};
+
+//: Required Field Validation
+requiredVal = function(text, field) {
+  return multiValidations(text, field, [
+    {
+      func: reqValidation
+    }
+  ]);
+};
+
+//: Field Length Validation
+lengthVal = function(text, length, field) {
+  return multiValidations(text, field, [
+    {
+      func: lenValidation,
+      args: {
+        length: length
+      }
+    }
+  ]);
 };
 
 //: User Validation
@@ -50,10 +71,25 @@ passVal = function(text, field) {
 confirmPassVal = function(text, password, field) {
   return multiValidations(text, field, [
     {
+      func: reqValidation
+    },
+    {
       func: confirmValidation,
       args: {
         password: password
       }
+    }
+  ]);
+};
+
+//: JSON Validation
+jsonVal = function(text, field) {
+  return multiValidations(text, field, [
+    {
+      func: reqValidation
+    },
+    {
+      func: jsonValidation
     }
   ]);
 };
@@ -105,6 +141,22 @@ confirmValidation = function(text, args) {
   }
 };
 
+//: JSON Validation
+jsonValidation = function(text, args) {
+  var isValid;
+  isValid = true;
+  try {
+    JSON.parse(text);
+  } catch (error1) {
+    isValid = false;
+  }
+  if (!isValid) {
+    return ['must be a valid JSON object', 'INVALID_JSON'];
+  } else {
+    return true;
+  }
+};
+
 //: Validation Object
 validationObject = function(text, field, check, args) {
   var error, validObj;
@@ -151,4 +203,4 @@ joinValidations = function(vals) {
   return error;
 };
 
-module.exports = {userVal, passVal, confirmPassVal, joinValidations};
+module.exports = {userVal, passVal, confirmPassVal, jsonVal, requiredVal, lengthVal, joinValidations};

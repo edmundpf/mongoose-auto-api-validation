@@ -2,6 +2,34 @@ assert = require('chai').assert
 should = require('chai').should()
 v = require('../index')
 
+# Required Validation
+
+describe 'Required Validation', ->
+	val = v.requiredVal('', 'customer')
+	it 'Returns object', ->
+		val.should.be.a('object')
+	it 'Messages and Codes Length', ->
+		assert(val.messages.length == val.codes.length)
+	it 'Required Check', ->
+		assert(val.codes.includes('CUSTOMER_REQUIRED'))
+	it 'Valid Text', ->
+		val = v.requiredVal('test@email.com', 'customer')
+		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
+
+# Length Validation
+
+describe 'Length Validation', ->
+	val = v.lengthVal('elmo', 8, 'name')
+	it 'Returns object', ->
+		val.should.be.a('object')
+	it 'Messages and Codes Length', ->
+		assert(val.messages.length == val.codes.length)
+	it 'Length Check', ->
+		assert(val.codes.includes('NAME_INVALID_LENGTH'))
+	it 'Valid Text', ->
+		val = v.lengthVal('christopher', 'name')
+		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
+
 # User Validation
 
 describe 'User Validation', ->
@@ -43,15 +71,34 @@ describe 'Password Validation', ->
 # Confirm Password Validation
 
 describe 'Confirm Password Validation', ->
-	val = v.confirmPassVal('test', 'test1', 'confirmPassword')
+	val = v.confirmPassVal('', 'test1', 'confirmPassword')
 	it 'Returns object', ->
 		val.should.be.a('object')
 	it 'Messages and Codes Length', ->
 		assert(val.messages.length == val.codes.length)
+	it 'Required Check', ->
+		assert(val.codes.includes('CONFIRM_PASSWORD_REQUIRED'))
 	it 'Match Check', ->
+		val = v.confirmPassVal('test', 'test1', 'confirmPassword')
 		assert(val.codes.includes('CONFIRM_PASSWORD_INVALID_CONFIRMATION'))
 	it 'Valid Password Confirmation', ->
 		val = v.confirmPassVal('test', 'test', 'confirmPassword')
+		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
+
+# JSON Validation
+
+describe 'JSON Validation', ->
+	val = v.jsonVal('', 'jsonField')
+	it 'Returns object', ->
+		val.should.be.a('object')
+	it 'Messages and Codes Length', ->
+		assert(val.messages.length == val.codes.length)
+	it 'Required Check', ->
+		assert(val.codes.includes('JSON_FIELD_REQUIRED'))
+	it 'Invalid JSON Check', ->
+		assert(val.codes.includes('JSON_FIELD_INVALID_JSON'))
+	it 'Valid JSON', ->
+		val = v.jsonVal('{"a":1,"b":"2","c":[1]}', 'jsonField')
 		assert(val.codes.length == 0 and val.messages.length == 0 and val.valid)
 
 # Join Validations
